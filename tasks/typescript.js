@@ -629,7 +629,7 @@ var GruntTs;
                 resolve(true);
                 return;
             }
-            var watchPath = this.ioHost.resolvePath(this.options.watch.path), chokidar = require("chokidar"), watcher, targetPaths = {}, registerEvents = function () {
+            var watchPath = this.options.watch.path, chokidar = require("chokidar"), watcher, targetPaths = {}, registerEvents = function () {
                 watcher = chokidar.watch(watchPath, { ignoreInitial: true, persistent: true });
                 watcher.on("add", function (path) {
                     handleEvent(path, "Added");
@@ -709,7 +709,7 @@ var GruntTs;
         Task.prototype.writeWatchingMessage = function (watchPath) {
             //TODO: grunt mesod
             console.log("");
-            console.log("Watching directory.... " + watchPath);
+            console.log( (typeof someVar === 'string'?("Watching directory.... " +watchPath):('Watching files: '+watchPath.length)) );
         };
 
         Task.prototype.resolve = function () {
