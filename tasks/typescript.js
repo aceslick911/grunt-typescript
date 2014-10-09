@@ -784,6 +784,7 @@ var GruntTs;
                     isEmitTarget = lastMod > sourceFile.lastMod;
 
                     if (isEmitTarget) {
+                        sourceFile=_this.updateFileSnapshot(sourceFile,resolvedFile.path);
                         emitTargets.push(resolvedFile.path);
                         sourceFile.lastMod = lastMod;
                     }
@@ -856,6 +857,18 @@ var GruntTs;
         Task.prototype.getScriptSnapshot = function (fileName) {
             return this.getSourceFile(fileName).scriptSnapshot;
         };
+        
+        Task.prototype.updateFileSnapshot = function (sourceFile, fileName){
+
+            var lastMod = this.ioHost.getLastMod(fileName);
+            if(lastMod > sourceFile.lastMod){
+                var fileInformation = this.ioHost.readFile(fileName, this.compilationSettings.codepage());
+                var snapshot = TypeScript.ScriptSnapshot.fromString(fileInformation.contents);
+                sourceFile.scriptSnapshot = snapshot;
+                sourceFile.lastMod = lastMod;
+            }
+            return sourceFile;
+        }        
 
         Task.prototype.getSourceFile = function (fileName) {
             var sourceFile = this.fileNameToSourceFile.lookup(fileName);
