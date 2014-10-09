@@ -3,6 +3,7 @@ grunt-typescript
 
 ## Changes from master branch
 This branch has been developed for better watching and compiling of typescript files.
+
     1. Removed resolving of "path" in "watch to Enable chokidar multiple file watching
     2. Added updateFileSnapshot method to update a cached files contents
 
