@@ -1,5 +1,11 @@
 grunt-typescript
 ================
+
+## Changes from master branch
+This branch has been developed for better watching and compiling of typescript files.
+    1. Removed resolving of "path" in "watch to Enable chokidar multiple file watching
+    2. Added updateFileSnapshot method to update a cached files contents
+
 [![Build Status](https://travis-ci.org/k-maru/grunt-typescript.png?branch=master)](https://travis-ci.org/k-maru/grunt-typescript) [![NPM version](https://badge.fury.io/js/grunt-typescript.png)](http://badge.fury.io/js/grunt-typescript)
 
 [![NPM](https://nodei.co/npm/grunt-typescript.png?downloads=true)](https://nodei.co/npm/grunt-typescript/)
@@ -148,7 +154,7 @@ For expansion of the future, You can also be specified 'object'.
             src: ['path/to/typescript/files/**/*.ts'],
             options: {
               watch: {
-                path: 'path/to/typescript/files',
+                path: ['path/to/typescript/files/**/*.ts'], // You can now use arrays of ts files or folders
                 before: ['beforetasks'],   //Set before tasks. eg: clean task
                 after: ['aftertasks']      //Set after tasks.  eg: minify task
                 atBegin: true              //Run tasks when watcher starts. default false
