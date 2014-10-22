@@ -158,7 +158,7 @@ module GruntTs{
         private writeWatchingMessage(watchPath: string): void{
             //TODO: grunt mesod
             console.log("");
-            console.log( (typeof someVar === 'string'?("Watching directory.... " +watchPath):('Watching files: '+watchPath.length)) );
+            console.log( (typeof watchPath === 'string'?("Watching directory.... " +watchPath):('Watching files: '+watchPath.length)) );
 
         }
 
@@ -308,7 +308,7 @@ module GruntTs{
             return this.getSourceFile(fileName).scriptSnapshot;
         }
 
-        private updateFileSnapshot (sourceFile, fileName){
+        private updateFileSnapshot (sourceFile: SourceFile, fileName:string){
 
              var lastMod = this.ioHost.getLastMod(fileName);
             if(lastMod > sourceFile.lastMod){
