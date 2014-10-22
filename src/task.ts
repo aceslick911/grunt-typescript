@@ -20,7 +20,7 @@ module GruntTs{
         private compilationSettings: TypeScript.ImmutableCompilationSettings;
         private inputFiles: string[];
         private fileNameToSourceFile = new TypeScript.StringHashTable<SourceFile>();
-        private hasErrors: boolean = false;
+        private hasErrors: boolean = false;                                                                                                                                                                  
         private resolvedFiles: TypeScript.IResolvedFile[] = [];
         private logger: TypeScript.ILogger = null;
         //private destinationPath: string;
@@ -71,7 +71,7 @@ module GruntTs{
                 resolve(true);
                 return;
             }
-            var watchPath = this.ioHost.resolvePath(this.options.watch.path),
+            var watchPath = this.options.watch.path,
                 chokidar: any = require("chokidar"),
                 watcher: any,
                 targetPaths: {[key:string]: string;} = {},
@@ -158,7 +158,8 @@ module GruntTs{
         private writeWatchingMessage(watchPath: string): void{
             //TODO: grunt mesod
             console.log("");
-            console.log("Watching directory.... " + watchPath);
+            console.log( (typeof someVar === 'string'?("Watching directory.... " +watchPath):('Watching files: '+watchPath.length)) );
+
         }
 
         private resolve(): void{
@@ -232,6 +233,7 @@ module GruntTs{
                     isEmitTarget = lastMod > sourceFile.lastMod;
 
                     if (isEmitTarget) {
+                        sourceFile=this.updateFileSnapshot(sourceFile,resolvedFile.path);
                         emitTargets.push(resolvedFile.path);
                         sourceFile.lastMod = lastMod;
                     }
@@ -304,6 +306,18 @@ module GruntTs{
 
         getScriptSnapshot(fileName: string): TypeScript.IScriptSnapshot {
             return this.getSourceFile(fileName).scriptSnapshot;
+        }
+
+        private updateFileSnapshot (sourceFile, fileName){
+
+             var lastMod = this.ioHost.getLastMod(fileName);
+            if(lastMod > sourceFile.lastMod){
+                var fileInformation = this.ioHost.readFile(fileName, this.compilationSettings.codepage());
+                var snapshot = TypeScript.ScriptSnapshot.fromString(fileInformation.contents);
+                sourceFile.scriptSnapshot = snapshot;
+                sourceFile.lastMod = lastMod;
+            }
+            return sourceFile;
         }
 
         private getSourceFile(fileName: string): SourceFile {
